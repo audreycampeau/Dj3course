@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <button id="btn">Toggle paragraph</button>
+    <p id="text">
+      Now you see me! Click the button to make me disappear.
+      Click again to bring me back.
+    </p>
+
+    <script>
+      document.getElementById("btn").addEventListener("click", function () {
+        const text = document.getElementById("text");
+       
+       if(text.style.display === "none") {
+          text.style.display = "block";
+        } else {
+          text.style.display = "none";
+        }
+
+      });
+    </script>
+
+   <h2>Turn the square into a circle</h2>
+    <div id="shape" style="width: 150px; height: 150px; background-color: coral;"></div>
+
+    
+    <script>
+      // Select the #shape element and change its borderRadius to make it a circle
+      const shape = document.getElementById("shape");
+      shape.style.borderRadius = "50%";
+
+    </script>
+
+ 
+
+  </body>
+</html>
