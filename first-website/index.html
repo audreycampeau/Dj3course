@@ -1,37 +1,48 @@
 <!DOCTYPE html>
 <html>
-  <body>
-    <button id="btn">Toggle paragraph</button>
-    <p id="text">
-      Now you see me! Click the button to make me disappear.
-      Click again to bring me back.
-    </p>
+<body>
+  <div id="chart"></div>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <script>
+    const data = [
+      { name: "A", value: 1 },
+      { name: "B", value: 5 },
+      { name: "C", value: 8 },
+      { name: "D", value: 10 }
+    ];
 
-    <script>
-      document.getElementById("btn").addEventListener("click", function () {
-        const text = document.getElementById("text");
-       
-       if(text.style.display === "none") {
-          text.style.display = "block";
-        } else {
-          text.style.display = "none";
-        }
+    const margin = 40, width = 500, height = 300;
 
-      });
-    </script>
+    const svg = d3.select("#chart").append("svg")
+      .attr("width", width + 2 * margin)
+      .attr("height", height + 2 * margin)
+      .append("g")
+      .attr("transform", `translate(${margin},${margin})`);
 
-   <h2>Turn the square into a circle</h2>
-    <div id="shape" style="width: 150px; height: 150px; background-color: coral;"></div>
+    const x = d3.scaleBand()
+      .domain(data.map(d => d.name))
+      .range([0, width])
+      .padding(0.2);
 
-    
-    <script>
-      // Select the #shape element and change its borderRadius to make it a circle
-      const shape = document.getElementById("shape");
-      shape.style.borderRadius = "50%";
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(data, d => d.value)])
+      .range([height, 0]);
 
-    </script>
+    svg.selectAll("rect")
+      .data(data)
+      .join("rect")
+      .attr("x", d => x(d.name))
+      .attr("y", d => y(d.value))
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - y(d.value))
+      .attr("fill", "steelblue");
 
- 
+    svg.append("g")
+      .attr("transform", `translate(0,${height})`)
+      .call(d3.axisBottom(x));
 
-  </body>
+    svg.append("g")
+      .call(d3.axisLeft(y));
+  </script>
+</body>
 </html>
